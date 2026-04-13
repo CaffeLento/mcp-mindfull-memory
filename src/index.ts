@@ -1,9 +1,9 @@
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import fs from "node:fs/promises";
-import path from "node:path";
-import os from "node:os";
 
 const server = new McpServer({
   name: "mcp-mindfull-memory",
@@ -19,7 +19,7 @@ const ALLOWED_ROOTS: string[] = (
 function isPathAllowed(filePath: string): boolean {
   const resolved = path.resolve(filePath);
   return ALLOWED_ROOTS.some(
-    (root) => resolved === root || resolved.startsWith(root + path.sep)
+    (root) => resolved === root || resolved.startsWith(root + path.sep),
   );
 }
 
@@ -104,7 +104,7 @@ server.registerTool(
     return {
       content: [{ type: "text", text: `Memory saved: ${file_path}` }],
     };
-  }
+  },
 );
 
 const transport = new StdioServerTransport();
