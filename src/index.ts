@@ -1,32 +1,16 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { buildAllowedRoots, isPathAllowed, stripFrontmatter } from "./utils.js";
 
 const server = new McpServer({
   name: "mcp-mindfull-memory",
   version: "0.1.0",
 });
 
-const ALLOWED_ROOTS: string[] = (
-  process.env.MEMORY_ALLOWED_PATHS
-    ? process.env.MEMORY_ALLOWED_PATHS.split(path.delimiter)
-    : [os.homedir()]
-).map((p) => path.resolve(p));
-
-function isPathAllowed(filePath: string): boolean {
-  const resolved = path.resolve(filePath);
-  return ALLOWED_ROOTS.some(
-    (root) => resolved === root || resolved.startsWith(root + path.sep),
-  );
-}
-
-function stripFrontmatter(content: string): string {
-  const match = content.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n([\s\S]*)$/);
-  return match ? match[1].trim() : content.trim();
-}
+const ALLOWED_ROOTS = buildAllowedRoots(process.env.MEMORY_ALLOWED_PATHS);
 
 server.registerTool(
   "write_memory",
@@ -38,7 +22,7 @@ server.registerTool(
     },
   },
   async ({ file_path, content }) => {
-    if (!isPathAllowed(file_path)) {
+    if (!isPathAllowed(file_path, ALLOWED_ROOTS)) {
       return {
         content: [
           {
