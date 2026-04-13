@@ -11,10 +11,7 @@ Not every thought deserves to become a memory.
 Requires Node.js ≥ 22.
 
 ```bash
-git clone https://github.com/CaffeLento/mcp-mindfull-memory.git
-cd mcp-mindfull-memory
-npm install && npm run build
-claude mcp add mindfull-memory node "$PWD/dist/index.js"
+claude mcp add mindfull-memory -- npx -y mcp-mindfull-memory
 ```
 
 > Writes are restricted to your home directory by default.
