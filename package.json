@@ -8,7 +8,12 @@
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js"
   },
-  "keywords": ["mcp", "memory", "claude", "model-context-protocol"],
+  "keywords": [
+    "mcp",
+    "memory",
+    "claude",
+    "model-context-protocol"
+  ],
   "author": "CaffeLento",
   "license": "ISC",
   "repository": {
@@ -21,7 +26,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0"
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
