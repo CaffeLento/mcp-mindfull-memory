@@ -1,0 +1,31 @@
+{
+  "name": "mcp-mindfull-memory",
+  "version": "0.1.0",
+  "description": "MCP server that writes memory files with user approval before saving",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": ["mcp", "memory", "claude", "model-context-protocol"],
+  "author": "CaffeLento",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CaffeLento/mcp-mindfull-memory.git"
+  },
+  "homepage": "https://github.com/CaffeLento/mcp-mindfull-memory#readme",
+  "bugs": {
+    "url": "https://github.com/CaffeLento/mcp-mindfull-memory/issues"
+  },
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}
