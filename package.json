@@ -1,6 +1,6 @@
 {
   "name": "mcp-mindfull-memory",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server that writes memory files with user approval before saving",
   "main": "dist/index.js",
   "bin": {
@@ -37,7 +37,8 @@
     "node": ">=22"
   },
   "files": [
-    "dist/index.js",
+    "dist/*.js",
+    "!dist/*.test.js",
     "README.md",
     "LICENSE"
   ],
