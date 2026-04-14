@@ -1,6 +1,6 @@
 # mcp-mindfull-memory
 
-MCP server that requires your approval before writing any memory file to disk.
+MCP server that elicits your approval before writing any memory file to disk.
 
 Not every thought deserves to become a memory.
 
