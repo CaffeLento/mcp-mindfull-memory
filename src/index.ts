@@ -4,7 +4,12 @@ import path from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { buildAllowedRoots, isPathAllowed, stripFrontmatter } from "./utils.js";
+import {
+  buildAllowedRoots,
+  isPathAllowed,
+  parseFrontmatter,
+  stripFrontmatter,
+} from "./utils.js";
 
 const server = new McpServer({
   name: "mcp-mindfull-memory",
@@ -84,6 +89,44 @@ server.registerTool(
         ],
         isError: true,
       };
+    }
+
+    const basename = path.basename(file_path);
+    if (basename !== "MEMORY.md") {
+      try {
+        const indexPath = path.join(path.dirname(file_path), "MEMORY.md");
+        const meta = parseFrontmatter(content);
+        const name = meta.name ?? basename.replace(/\.md$/, "");
+        const description = meta.description ?? "";
+        const entry = `- [${name}](${basename}) — ${description}`;
+
+        let indexContent = "# Memory Index\n\n";
+        try {
+          indexContent = await fs.readFile(indexPath, "utf8");
+        } catch {
+          // index doesn't exist yet
+        }
+
+        const escapedBasename = basename.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const existing = new RegExp(
+          `^- \\[.*?\\]\\(${escapedBasename}\\).*$`,
+          "m",
+        );
+        indexContent = existing.test(indexContent)
+          ? indexContent.replace(existing, entry)
+          : `${(indexContent.endsWith("\n") ? indexContent : `${indexContent}\n`) + entry}\n`;
+
+        await fs.writeFile(indexPath, indexContent, "utf8");
+      } catch (err) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Memory saved but failed to update index: ${(err as Error).message}`,
+            },
+          ],
+        };
+      }
     }
 
     return {
